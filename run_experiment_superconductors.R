@@ -10,7 +10,6 @@ N.threads = max(1, parallel::detectCores() - 1)
 Sys.setenv(R_RANGER_NUM_THREADS = N.threads)
 options(Ncpus = N.threads)
 
-settings = list()
 arg_list = list(
   rep.vect = 1:10,
   alpha = 0.1,
@@ -27,16 +26,7 @@ arg_list = list(
   N.threads = N.threads
 )
 
-experiment_super(rep.vect = 1:10, N.threads = N.threads) #list(arg_list, arg_list,....)
-#setting: 1
-settings[[1]]$dt.names = "community"
-settings[[1]]$title = "example"
-settings[[1]]$method = "all"
-settings[[1]]$tail.error.control = "single"
-settings[[1]]$tune_quantile_CV = F
-#setting:2....
-
 for (sett in settings)
 {
-  do.call(experiment_super, args = sett)
+  do.call(experiment_super, args = arg_list)
 }
