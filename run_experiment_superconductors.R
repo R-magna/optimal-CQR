@@ -26,7 +26,6 @@ arg_list = list(
   N.threads = N.threads
 )
 
-for (sett in settings)
-{
-  do.call(experiment_super, args = arg_list)
-}
+do.call(experiment_super, args = arg_list)
+
+
