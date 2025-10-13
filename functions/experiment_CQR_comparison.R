@@ -124,11 +124,11 @@ experiment_CQR = function(dt.names = NULL,
   require(fastDummies)
   require(data.table)
   
-  source("import_datasets.R")
-  source("new_models.R")
-  source("general_helper.R")
-  source("CQR_helper.R")
-  source("CQR.R")
+  source("functions/import_datasets.R")
+  source("functions/new_models.R")
+  source("functions/general_helper.R")
+  source("functions/CQR_helper.R")
+  source("functions/CQR.R")
 
   possible.dt = c(
     "bike", #Bike Sharing
@@ -270,3 +270,4 @@ experiment_CQR = function(dt.names = NULL,
   write_AVG.files(path_base)
 
 }
+
