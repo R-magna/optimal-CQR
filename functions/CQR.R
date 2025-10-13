@@ -13,12 +13,12 @@
 # - exact_coverage = (T, F) (if is T, and if it is necessary smoothed CP is applied)
 
 #conformal.quant.split-----
+
 conformal.quant.split = function(x,
                                  y,
                                  x0,
                                  train.quant.fun,
                                  predict.quant.fun,
-                                 predict.quant.bootstrap.fun = NULL,
                                  alpha = 0.1,
                                  rho = 0.5,
                                  method = "CQR",
@@ -26,9 +26,11 @@ conformal.quant.split = function(x,
                                  score.type = "basic",
                                  q.probs = c(alpha / 2, 1 - alpha / 2),
                                  tau_by = ifelse(score.type == "basic", NULL, 0.005),
+                                 max.n.tau = ifelse(score.type == "basic", NULL, 50),
                                  exact_coverage = T,
                                  tune_quantile_CV = T,
                                  coverage_factor = ifelse(tune_quantile_CV, 0.85, NULL),
+                                 predict.quant.bootstrap.fun = NULL,
                                  split = NULL,
                                  seed = NULL,
                                  verbose = FALSE)
@@ -157,7 +159,8 @@ conformal.quant.split = function(x,
       predict.quant.fun = predict.quant.fun,
       alpha = alpha,
       coverage_factor = coverage_factor,
-      tau_by = tau_by
+      tau_by = tau_by,
+      max.n.tau = max.n.tau
     )
     if ("basic" %in% score.type)
       q.probs = CV_tuned$basic
@@ -173,6 +176,8 @@ conformal.quant.split = function(x,
     if ("optimal" %in% score.type)
     {
       taus_lo = seq(0, alpha, by = tau_by)
+      if (length(taus_lo) > max.n.tau)
+        taus_lo = seq(0, alpha, length.out = max.n.tau)
       n.taus = length(taus_lo)
       taus = c(taus_lo, 1 - (alpha - taus_lo))
       q.train = unique(c(q.train, taus)) |>
@@ -448,6 +453,7 @@ conformal.quant.split = function(x,
         I.up = Hat.test[, 2] + q[, 2] * (SD.boot_test[, 2] + eps)
       },
       "UACQR-p" = {
+        #q = round(q) #PROVA AL POSTO DI round(q), ceiling(q) floor(q)
         B = nrow(P.boot.test_sorted[[1]]) - 2 #since +Inf and -Inf have been added
         Hat_p = sapply(seq_len(nx0), function(i) {
           q.b_i = P.boot.test_sorted[[i]]
@@ -466,8 +472,9 @@ conformal.quant.split = function(x,
         replacement = "."
       ),
       ifelse(tail == "single", "", "_sep"),
+      #paste0("_",tail)),
       ifelse(score.variety == "basic", "", "_optim")
-    )
+    ) #paste0("_",score.variety)))
     
     Int = list()
     Int[[name.pos]] = list(lo = I.lo, up = I.up)
