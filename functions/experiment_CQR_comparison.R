@@ -147,6 +147,9 @@ experiment_CQR = function(dt.names = NULL,
   
   if (is.null(dt.names))
     dt.names = possible.dt
+
+  if("all" %in% dt.names)
+    dt.names = possible.dt
   
   Sys.setenv(R_RANGER_NUM_THREADS = N.threads)
   options(Ncpus = N.threads)
@@ -265,4 +268,5 @@ experiment_CQR = function(dt.names = NULL,
   }
   #write avg result
   write_AVG.files(path_base)
+
 }
