@@ -38,14 +38,14 @@ experiment_super = function(rep.vect = 1:10,
   require(e1071)
   dist = stats::dist#LCP::dist
   
-  source("general_helper.R")
-  source("new_models.R")
-  source("CQR_helper.R")
-  source("CQR.R")
-  source("DCP_function.R")
-  source("LCP_function.R")
-  source("stability_selection_lasso.R")
-  source("BO_tuning.R")
+  source("functions/general_helper.R")
+  source("functions/new_models.R")
+  source("functions/CQR_helper.R")
+  source("functions/CQR.R")
+  source("functions/DCP_function.R")
+  source("functions/LCP_function.R")
+  source("functions/stability_selection_lasso.R")
+  source("functions/BO_tuning.R")
   
   if (any(models == "all"))
     models = c("XGB", "KNN", "RDG")#,"SVM")
@@ -1443,3 +1443,4 @@ experiment_super = function(rep.vect = 1:10,
             ),
             row.names = F)
 }
+
