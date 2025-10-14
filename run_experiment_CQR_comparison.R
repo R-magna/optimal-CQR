@@ -39,16 +39,17 @@ arg_list = list(
   factor_to_dummy = T
 )
 
-settings = list(arg_list) #list(arg_list, arg_list,....)
-#setting: 1
+settings = list(arg_list, arg_list) #list(arg_list, arg_list,....)
+#setting: 1 (example)
 settings[[1]]$dt.names = "community"
 settings[[1]]$title = "example"
 settings[[1]]$method = "all"
 settings[[1]]$tail.error.control = "single"
 settings[[1]]$tune_quantile_CV = F
-#setting:2....
+#setting:2 (replication of comparison CQR)
 
 for (sett in settings)
 {
   do.call(experiment_CQR, args = sett)
 }
+
