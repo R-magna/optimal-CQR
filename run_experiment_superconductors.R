@@ -4,7 +4,7 @@ library(parallel)
 library(plyr)
 library(ranger)
 
-source("functions/exmperiment_superconductors.R")
+source("functions/experiment_superconductors.R")
 
 N.threads = max(1, parallel::detectCores() - 1)
 Sys.setenv(R_RANGER_NUM_THREADS = N.threads)
@@ -27,5 +27,6 @@ arg_list = list(
 )
 
 do.call(experiment_super, args = arg_list)
+
 
 
