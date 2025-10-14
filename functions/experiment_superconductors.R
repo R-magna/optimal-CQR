@@ -458,12 +458,15 @@ experiment_super = function(rep.vect = 1:10,
       }
       rm(res, mod.x.tr, mod.y.tr, new.mod, t, tau, ty, j, i)
       if (save_best.par)
+      {
         saveRDS(best_par,
                 file = paste0("result.superconductor/", name.dir, "/best_par.rds"))
-    } else if (CV_hyperpar == F)
-    {
+      }
+    } 
+    #else if (CV_hyperpar == F)
+    #{
       #best_par = par.default
-    }
+    #}
     res.CP = list()
     #benchmark-----
     rmse = 9.5
@@ -1393,32 +1396,8 @@ experiment_super = function(rep.vect = 1:10,
     write.csv(tab_res,
               file =  file.path(paste0("result.superconductor/", name.dir), name.file),
               row.names = F)
-    if (!dir.exists(paste0("result.superconductor/", name.dir, "/single_prediction"))) {
-      dir.create(
-        paste0(
-          "result.superconductor/",
-          name.dir,
-          "/single_prediction"
-        ),
-        recursive = TRUE
-      )
-    }
-    write.csv(
-      mutate(res.CP[["benchmark"]], y = test.y, i.pos = i.test),
-      file =  file.path(
-        paste0("result.superconductor/", name.dir, "/single_prediction"),
-        paste0("benchmark_", rep, ".csv")
-      ),
-      row.names = F
-    )
-    write.csv(
-      mutate(res.CP[["CQR_cv"]][["CQR_optim"]], y = test.y, i.pos = i.test),
-      file =  file.path(
-        paste0("result.superconductor/", name.dir, "/single_prediction"),
-        paste0("CQR_optim_", rep, ".csv")
-      ),
-      row.names = F
-    )
+
+
   }
   
   tab.avg = NULL
