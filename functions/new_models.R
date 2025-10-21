@@ -178,6 +178,43 @@ svm.funs = function(cost = 1,
     active.fun = active.fun
   ))
 }
+#rf_ranger.funs------
+rf_ranger.funs = function (ntree = 500, varfrac = 0.333, replace = TRUE,
+                           obsfrac = ifelse(replace, 1, 0.632), nodesize = 5,
+                           nthreads = 0, keep.inbag = F, importance = T) 
+{
+  if (!require("ranger", quietly = TRUE)) {
+    stop("Package ranger not installed (required here)!")
+  }
+  conformalInference:::check.pos.num(nthreads)
+  conformalInference:::check.int(nthreads)
+  conformalInference:::check.pos.int(ntree)
+  conformalInference:::check.num.01(varfrac)
+  conformalInference:::check.bool(replace)
+  conformalInference:::check.num.01(obsfrac)
+  conformalInference:::check.pos.int(nodesize)
+  conformalInference:::check.bool(keep.inbag)
+  conformalInference:::check.bool(importance)
+  train.fun = function(x, y, out = NULL) {
+    p = ncol(x)
+    return(ranger::ranger(x = x ,y=y, num.trees = ntree, mtry = floor(varfrac*p),
+                          min.node.size = nodesize, replace=replace, sample.fraction = obsfrac,
+                          num.threads = nthreads, keep.inbag = keep.inbag,
+                          importance = ifelse(importance, "impurity", "none") ))
+  }
+  predict.fun = function(out, newx) {
+    var.names = out$forest$independent.variable.names
+    newx = as.data.frame(newx)
+    colnames(newx) = var.names
+    return(predict(out, newx)$predictions)
+  }
+  
+  active.fun = function(out) {
+    return(list(which(out$variable.importance>0)))
+  }
+  return(list(train.fun = train.fun, predict.fun = predict.fun, 
+              active.fun = active.fun))
+}
 #--------------
 #B) Functions of quantile regression models that can be used with conformal.quant.split function
 #-------------
