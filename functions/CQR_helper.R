@@ -81,16 +81,17 @@ tune_CV_q = function(X = x[i1, ],
                      predict.quant.fun = predict.quant.fun,
                      alpha = 0.1,
                      coverage_factor = 0.95,
-                     tau_by = tau_by)
+                     tau_by = tau_by,
+                     max.n.tau = 50)
 {
   target_coverage = (1 - alpha) * coverage_factor
-  range_less = 0.30
-  range_add = 0.05
+  range_less = 0.25
+  range_add = 0.1
   vals_by = 0.01
   all_q = c()
   grid_len = seq(
-    from = 1 - alpha - range_less,
-    to = min((1 - alpha) + range_add, .99),
+    from = max(target_coverage - range_less, 0.01),
+    to = min(target_coverage + range_add, .99),
     by = vals_by
   ) |>
     round(3) |>
@@ -116,6 +117,8 @@ tune_CV_q = function(X = x[i1, ],
   {
     q_taus = lapply(grid_len, function(len_i) {
       taus_lo = seq(0, 1 - len_i, by = tau_by)
+      if (length(taus_lo) > max.n.tau)
+        taus_lo = seq(0, 1 - len_i, length.out = max.n.tau)
       taus_hi = taus_lo + len_i
       return(round(cbind(taus_lo, taus_hi), 3))
     })
@@ -195,6 +198,7 @@ tune_CV_q = function(X = x[i1, ],
   return(res)
   
 }
+
 #B.bootstrap_prediction-----
 #bootstrap predictions are obtained to apply UACQR methods. This function will
 #be used if no ad hoc function is specified based on the underlying model.
