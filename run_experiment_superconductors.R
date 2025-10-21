@@ -21,12 +21,13 @@ arg_list = list(
   trasf.log.y = F,
   trasf.add.group = T,
   coverage_factor = 0.85,
-  CV_hyperpar = T,#T,F,"load"
+  CV_hyperpar = T,#T,"load" (F not implemented)
   save_best.par = T,
   N.threads = N.threads
 )
 
 do.call(experiment_super, args = arg_list)
+
 
 
 
