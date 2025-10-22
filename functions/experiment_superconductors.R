@@ -1,17 +1,20 @@
 #######exmperiment_superconductors#########
 
+
 #experiment_super-----
 experiment_super = function(rep.vect = 1:10,
                             alpha = 0.1,
                             rho = 0.8,
                             models = "all",
-                            model.selection = "stab", #c("PCA,"stab")
+                            model.selection = "stab",
+                            #c("PCA,"stab")
                             seed = 1,
                             frac.test = 0.2,
                             trasf.log.y = F,
                             trasf.add.group = T,
                             coverage_factor = 0.85,
-                            CV_hyperpar = "load", #T,F
+                            CV_hyperpar = "load",
+                            #T,F
                             save_best.par = T,
                             N.threads = 1)
 {
@@ -85,6 +88,11 @@ experiment_super = function(rep.vect = 1:10,
   )
   if (!dir.exists(paste0("result.superconductor/", name.dir))) {
     dir.create(paste0("result.superconductor/", name.dir), recursive = TRUE)
+  }
+  if (save_best.par &
+      !dir.exists(paste0("result.superconductor/", name.dir, "/best_par"))) {
+    dir.create(paste0("result.superconductor/", name.dir, "/best_par"),
+               recursive = TRUE)
   }
   #rep----
   for (rep in rep.vect)
@@ -459,13 +467,21 @@ experiment_super = function(rep.vect = 1:10,
       rm(res, mod.x.tr, mod.y.tr, new.mod, t, tau, ty, j, i)
       if (save_best.par)
       {
-        saveRDS(best_par,
-                file = paste0("result.superconductor/", name.dir, "/best_par.rds"))
+        saveRDS(
+          best_par,
+          file = paste0(
+            "result.superconductor/",
+            name.dir,
+            "/best_par/best_par_rep_",
+            rep,
+            ".rds"
+          )
+        )
       }
-    } 
+    }
     #else if (CV_hyperpar == F)
     #{
-      #best_par = par.default
+    #best_par = par.default
     #}
     res.CP = list()
     #benchmark-----
@@ -1396,8 +1412,8 @@ experiment_super = function(rep.vect = 1:10,
     write.csv(tab_res,
               file =  file.path(paste0("result.superconductor/", name.dir), name.file),
               row.names = F)
-
-
+    
+    
   }
   
   tab.avg = NULL
@@ -1422,4 +1438,3 @@ experiment_super = function(rep.vect = 1:10,
             ),
             row.names = F)
 }
-
