@@ -26,7 +26,9 @@ arg_list = list(
   N.threads = N.threads
 )
 
+#replication of Superconductivity Data application
 do.call(experiment_super, args = arg_list)
+
 
 
 
