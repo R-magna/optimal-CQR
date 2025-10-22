@@ -47,9 +47,13 @@ settings[[1]]$method = "all"
 settings[[1]]$tail.error.control = "single"
 settings[[1]]$tune_quantile_CV = F
 #setting:2 (replication of comparison CQR)
+settings[[2]]$tail.error.control = "single"
+settings[[2]]$tune_quantile_CV = F
+settings[[2]]$calculate.QR = F
 
 for (sett in settings)
 {
   do.call(experiment_CQR, args = sett)
 }
+
 
