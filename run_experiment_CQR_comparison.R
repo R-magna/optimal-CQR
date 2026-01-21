@@ -50,7 +50,6 @@ arg_list$dt.names = c(
   "super"#Superconductivity Data
 )
 
-#arg_list$dt.names = "facebook_2"
 settings = list(arg_list, arg_list) #list(arg_list, arg_list,....)
 ###setting: 1 (example)
 settings[[1]]$tune_quantile_CV = F
@@ -66,6 +65,7 @@ for (sett in settings)
 #settings$dt.names = c("meps_19","meps_20")
 #settings$coverage_factor = 1
 #do.call(experiment_CQR, args = settings)
+
 
 
 
