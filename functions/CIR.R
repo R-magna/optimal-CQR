@@ -1,3 +1,14 @@
+########CIR########
+#Function to apply CIR an CTI.
+#The function was written maintaining a structure similar to that of the
+#“conformal.pred.split” function (for Slit CP) of "conformalInference" package.
+#https://github.com/ryantibs/conformal/tree/master/conformalInference
+
+#possible variations:
+# - method = ("CIR", "CTI")
+# - exact_coverage = (T, F) (if is T, and if it is necessary smoothed CP is applied)
+# - T.intervals = numeric (defines the number of subintervals defined by estimating T.intervals+1 conditional quantiles)
+
 #CIR-----
 CIR.split = function(
     x,
@@ -405,4 +416,5 @@ CIR.split = function(
   
   return(result)
 }
+
 
