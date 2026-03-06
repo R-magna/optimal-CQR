@@ -35,7 +35,7 @@ CIR.split = function(
   x0 = as.data.table(x0, ncol = p)
   nx0 = nrow(x0)
   
-  possible.method = c("CIR","CIR_mio","CTI","all") #CHR, CTI, CIR+, CIR++ !!!CIR++ è una mia variazione
+  possible.method = c("CIR","CIR_mio","CTI","all") #CTI, CIR+, CIR_mio !!!CIR_mio è una mia variazione
   # Check input arguments ----
   #conformalInference:::check.args(x=x,y=y,x0=x0,alpha=alpha,train.fun=train.quant.fun,
   #                                predict.fun=predict.quant.fun)
@@ -416,5 +416,6 @@ CIR.split = function(
   
   return(result)
 }
+
 
 
