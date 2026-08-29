@@ -7,8 +7,7 @@
 #possible variations:
 # - method = ("CIR", "CTI")
 # - exact_coverage = (T, F) (if is T, and if it is necessary smoothed CP is applied)
-# - T.intervals = numeric (defines the number of subintervals defined by estimating T.intervals+1 conditional quantiles)
-
+# - T.intervals = numeric (defines the number of subintervals intervals constructed by estimating T.intervals+1 conditional quantiles)
 #CIR-----
 CIR.split = function(
     x,
@@ -35,7 +34,7 @@ CIR.split = function(
   x0 = as.data.table(x0, ncol = p)
   nx0 = nrow(x0)
   
-  possible.method = c("CIR","CIR_mio","CTI","all") #CTI, CIR+, CIR_mio !!!CIR_mio è una mia variazione
+  possible.method = c("CIR","CIR_mio","CTI","all") #CHR, CTI, CIR+, CIR++ !!!CIR++ è una mia variazione
   # Check input arguments ----
   #conformalInference:::check.args(x=x,y=y,x0=x0,alpha=alpha,train.fun=train.quant.fun,
   #                                predict.fun=predict.quant.fun)
@@ -360,12 +359,14 @@ CIR.split = function(
   {
     score.calib =  sapply(seq_len(n2), function(i) {
       I.len = length_int.calib[i, ]
-      I.y = y_interval.calib[[i]]
-      return(min(I.len[I.y]))
+      I.y = min(y_interval.calib[[i]])
+      s = I.len[I.y]
+      if(is.na(s))
+        s = Inf
+      return(s)
     })
     score.calib = c(score.calib, Inf)
-    
-    table(round(score.calib,2))
+    which(is.na(score.calib))
     q_hat = smoothed_cp(
       score = score.calib,
       significance = 1 - alpha,
@@ -416,6 +417,4 @@ CIR.split = function(
   
   return(result)
 }
-
-
 
